@@ -1,0 +1,4 @@
+#ifndef WALLVALIDATOR_H
+#define WALLVALIDATOR_H
+
+#endif // WALLVALIDATOR_H
