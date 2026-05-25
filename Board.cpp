@@ -75,8 +75,6 @@ const vector<Wall>& Board::getPlacedWalls() const {
     return walls;
 }
 
-}
-
 
 // Temporary-wall helpers
 
