@@ -102,5 +102,5 @@ placements, and "Hard" AI difficulty:
 
 👤 Author
 
-  - Your Name - AI Project 2026
-  - Developed as part of the Artificial Intelligence Course.
+  - Your Name                -code
+  - karen nasser abd almlak  -2300354
