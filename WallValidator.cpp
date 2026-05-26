@@ -53,13 +53,13 @@ bool WallValidator::doesCross(const Wall& wall, const std::vector<Wall>& existin
 }
 
 bool WallValidator::hasValidPaths(const Wall& newWall, Board& board, PathFinder& pathFinder) {
-    // 1. Temporarily add the wall to the board state
+    // 1. Temporarily add the wall
     board.addTemporaryWall(newWall);
 
-    // 2. Check if BOTH players can still reach their goal
-    // Player 1 goal is usually row 8, Player 2 goal is row 0
-    bool p1Path = pathFinder.checkPathExists(board.getPlayer1Pos(), 8);
-    bool p2Path = pathFinder.checkPathExists(board.getPlayer2Pos(), 0);
+    // 2. Check if BOTH players can reach their goals
+    // Player 0 is Red, Player 1 is Blue/AI
+    bool p1Path = pathFinder.hasPath(board, 0);
+    bool p2Path = pathFinder.hasPath(board, 1);
 
     // 3. Remove the temporary wall
     board.removeTemporaryWall();

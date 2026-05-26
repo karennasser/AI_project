@@ -23,10 +23,9 @@ public:
     // Main entry point called by the game loop. 
     // Returns true if a wall was placed, false if the pawn was moved.
     bool takeTurn(Board& board, WallValidator& validator, PathFinder& pathFinder);
-
+    std::pair<int, int> chooseMove(const Board& board, PathFinder& pathFinder, WallValidator& validator);
 private:
     // Core decision methods
-    std::pair<int, int> chooseMove(const Board& board, PathFinder& pathFinder, WallValidator& validator);
     Wall chooseWall(const Board& board, WallValidator& validator, PathFinder& pathFinder);
     
     // Static evaluation functions to score a specific board state
