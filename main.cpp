@@ -12,123 +12,119 @@
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
 
-    Board *myLogicBoard = new Board(9);
+    // Global Stylesheet for a Professional Dark Theme
+    a.setStyleSheet(
+        "QWidget { font-family: 'Segoe UI', sans-serif; color: #E0E0E0; }"
+        "QFrame#Sidebar { background-color: #252526; border-left: 2px solid #333333; }"
+        "QLabel#SectionTitle { color: #FF9800; font-size: 16px; font-weight: bold; border-bottom: 1px solid #333333; padding-bottom: 5px; margin-top: 10px; }"
+        "QLabel#StatusLabel { font-size: 13px; color: #AAAAAA; }"
+        "QComboBox { background-color: #333333; border: 1px solid #444444; border-radius: 4px; padding: 5px; color: white; }"
+        "QComboBox:hover { border: 1px solid #FF9800; }"
+        "QPushButton { background-color: #3E3E42; border: none; border-radius: 4px; padding: 8px; font-weight: bold; color: white; }"
+        "QPushButton:hover { background-color: #505050; }"
+        "QPushButton#RestartBtn { background-color: #A12621; }"
+        "QPushButton#RestartBtn:hover { background-color: #C62828; }"
+        "QPushButton#UndoBtn { background-color: #2D3D45; }"
+        "QPushButton#UndoBtn:hover { background-color: #37474F; }"
+        );
 
+    Board *myLogicBoard = new Board(9);
     QWidget *mainWindow = new QWidget();
-    mainWindow->setWindowTitle("Quoridor Game - Ultimate Bonus Pack");
-    mainWindow->resize(1000, 720);
-    mainWindow->setStyleSheet("background-color: #1e1e1e;");
+    mainWindow->setWindowTitle("Quoridor AI Master 2026");
+    mainWindow->resize(1200, 850);
+    mainWindow->setStyleSheet("background-color: #1E1E1E;");
 
     QHBoxLayout *mainLayout = new QHBoxLayout(mainWindow);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->setSpacing(0);
 
+    // ---- SIDEBAR ----
     QFrame *sidebar = new QFrame();
-    sidebar->setFixedWidth(260);
-    sidebar->setStyleSheet("background-color: #2d2d2d; border-radius: 10px; padding: 10px;");
+    sidebar->setObjectName("Sidebar");
+    sidebar->setFixedWidth(300);
     QVBoxLayout *sidebarLayout = new QVBoxLayout(sidebar);
+    sidebarLayout->setContentsMargins(20, 20, 20, 20);
+    sidebarLayout->setSpacing(15);
 
-    QLabel *titleLabel = new QLabel("MATCH STATUS");
-    titleLabel->setStyleSheet("color: #ff9800; font-size: 18px; font-weight: bold;");
-    sidebarLayout->addWidget(titleLabel, 0, Qt::AlignCenter);
+    // 1. SETTINGS SECTION
+    QLabel *settingsHeader = new QLabel("GAME SETTINGS");
+    settingsHeader->setObjectName("SectionTitle");
+    sidebarLayout->addWidget(settingsHeader);
 
-    QFrame *line = new QFrame();
-    line->setFrameShape(QFrame::HLine);
-    line->setStyleSheet("color: #444444;");
-    sidebarLayout->addWidget(line);
+    auto addLabeledCombo = [&](QString labelText, QStringList items) -> QComboBox* {
+        QLabel *lbl = new QLabel(labelText);
+        lbl->setStyleSheet("color: #888888; font-size: 11px; text-transform: uppercase;");
+        QComboBox *cb = new QComboBox();
+        cb->addItems(items);
+        sidebarLayout->addWidget(lbl);
+        sidebarLayout->addWidget(cb);
+        return cb;
+    };
 
-    // ---- Settings Controls (Dropdowns) ----
-    QLabel *sizeTitle = new QLabel("Board Grid Size:");
-    sizeTitle->setStyleSheet("color: #ff9800; font-weight: bold; margin-top: 5px;");
-    sidebarLayout->addWidget(sizeTitle);
+    QComboBox *modeBox = addLabeledCombo("Match Mode", {"Human vs AI", "Human vs Human"});
+    QComboBox *sizeBox = addLabeledCombo("Grid Dimensions", {"9 x 9 (Standard)", "7 x 7 (Blitz)", "5 x 5 (Mini)"});
+    QComboBox *tileBox = addLabeledCombo("Board Zoom", {"Medium", "Small", "Large"});
+    QComboBox *diffBox = addLabeledCombo("AI Intellect", {"Easy", "Medium", "Hard"});
 
-    QComboBox *sizeBox = new QComboBox();
-    sizeBox->addItems({"9 x 9 (Standard)", "7 x 7 (Blitz)", "5 x 5 (Mini)"});
-    sizeBox->setStyleSheet("background-color: #424242; color: white; padding: 4px; border-radius: 3px;");
-    sidebarLayout->addWidget(sizeBox);
+    // 2. STATUS SECTION
+    QLabel *statusHeader = new QLabel("MATCH STATUS");
+    statusHeader->setObjectName("SectionTitle");
+    sidebarLayout->addWidget(statusHeader);
 
-    // ---- NEW: Tile Size Customizer Dropdown ----
-    QLabel *tileTitle = new QLabel("Square Tile Zoom:");
-    tileTitle->setStyleSheet("color: #ff9800; font-weight: bold; margin-top: 10px;");
-    sidebarLayout->addWidget(tileTitle);
-
-    QComboBox *tileBox = new QComboBox();
-    tileBox->addItems({"Medium (50px)", "Small (40px)", "Large (60px)"});
-    tileBox->setStyleSheet("background-color: #424242; color: white; padding: 4px; border-radius: 3px;");
-    sidebarLayout->addWidget(tileBox);
-
-    QLabel *diffTitle = new QLabel("AI Difficulty:");
-    diffTitle->setStyleSheet("color: #ff9800; font-weight: bold; margin-top: 10px;");
-    sidebarLayout->addWidget(diffTitle);
-
-    QComboBox *diffBox = new QComboBox();
-    diffBox->addItems({"Easy ", "Medium ", "Hard "});
-    diffBox->setStyleSheet("background-color: #424242; color: white; padding: 4px; border-radius: 3px;");
-    sidebarLayout->addWidget(diffBox);
-
-    QFrame *lineSettings = new QFrame();
-    lineSettings->setFrameShape(QFrame::HLine);
-    lineSettings->setStyleSheet("color: #444444; margin-top: 10px;");
-    sidebarLayout->addWidget(lineSettings);
-
-    // Statistics Monitor Display
-    QLabel *turnLabel = new QLabel();
-    turnLabel->setStyleSheet("color: #ffffff; font-size: 14px; font-weight: bold; margin-top: 5px;");
+    QLabel *turnLabel = new QLabel("Current Turn: Player 1");
+    turnLabel->setStyleSheet("color: #FFFFFF; font-size: 14px; font-weight: bold;");
     sidebarLayout->addWidget(turnLabel);
 
-    QLabel *movesLabel = new QLabel();
-    movesLabel->setStyleSheet("color: #b0bec5; font-size: 14px; margin-top: 5px;");
+    QLabel *movesLabel = new QLabel("Total Moves: 0");
+    movesLabel->setObjectName("StatusLabel");
     sidebarLayout->addWidget(movesLabel);
 
-    QLabel *p1Title = new QLabel("Player 1 (Red)");
-    p1Title->setStyleSheet("color: #d32f2f; font-size: 14px; font-weight: bold; margin-top: 10px;");
-    sidebarLayout->addWidget(p1Title);
+    // Wall Stats Group
+    QFrame *wallStats = new QFrame();
+    QVBoxLayout *wallLayout = new QVBoxLayout(wallStats);
+    wallLayout->setContentsMargins(0,0,0,0);
 
-    QLabel *p1WallsLabel = new QLabel();
-    p1WallsLabel->setStyleSheet("color: #ffffff; font-size: 13px;");
-    sidebarLayout->addWidget(p1WallsLabel);
+    QLabel *p1WallsLabel = new QLabel("P1 (Red) Walls: 10");
+    p1WallsLabel->setStyleSheet("color: #F44336; font-weight: bold;");
+    QLabel *p2WallsLabel = new QLabel("P2 (Blue) Walls: 10");
+    p2WallsLabel->setStyleSheet("color: #2196F3; font-weight: bold;");
 
-    QLabel *p2Title = new QLabel("Player 2 (Blue)");
-    p2Title->setStyleSheet("color: #1976d2; font-size: 14px; font-weight: bold; margin-top: 10px;");
-    sidebarLayout->addWidget(p2Title);
+    wallLayout->addWidget(p1WallsLabel);
+    wallLayout->addWidget(p2WallsLabel);
+    sidebarLayout->addWidget(wallStats);
 
-    QLabel *p2WallsLabel = new QLabel();
-    p2WallsLabel->setStyleSheet("color: #ffffff; font-size: 13px;");
-    sidebarLayout->addWidget(p2WallsLabel);
+    sidebarLayout->addStretch(); // Important: This pushes the buttons to the very bottom
 
-    sidebarLayout->addStretch();
-
-    // Game Action Buttons
-    QPushButton *undoButton = new QPushButton("Undo Move");
-    undoButton->setStyleSheet("background-color: #37474f; color: white; font-weight: bold; padding: 6px; border-radius: 5px;");
+    // 3. ACTION BUTTONS
+    QPushButton *undoButton = new QPushButton("UNDO MOVE");
+    undoButton->setObjectName("UndoBtn");
     sidebarLayout->addWidget(undoButton);
 
-    QPushButton *redoButton = new QPushButton("Redo Move");
-    redoButton->setStyleSheet("background-color: #4f5b62; color: white; font-weight: bold; padding: 6px; border-radius: 5px; margin-top: 3px;");
+    QPushButton *redoButton = new QPushButton("REDO MOVE");
     sidebarLayout->addWidget(redoButton);
 
-    QPushButton *restartButton = new QPushButton("Restart Match");
-    restartButton->setStyleSheet("background-color: #c62828; color: white; font-weight: bold; padding: 6px; border-radius: 5px; margin-top: 5px;");
+    QPushButton *restartButton = new QPushButton("RESTART MATCH");
+    restartButton->setObjectName("RestartBtn");
     sidebarLayout->addWidget(restartButton);
 
-    // Render Widget Instance Setup
+    // ---- BOARD VIEW ----
     GameBoardWidget *boardWidget = new GameBoardWidget(myLogicBoard, turnLabel, movesLabel, p1WallsLabel, p2WallsLabel);
-    mainLayout->addWidget(boardWidget);
+    mainLayout->addWidget(boardWidget, 1); // 1 = stretch factor, board takes remaining space
     mainLayout->addWidget(sidebar);
 
-    // ---- Connections Wiring ----
-
-    QObject::connect(sizeBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) {
-        int selectedSize = 9;
-        if (index == 1) selectedSize = 7;
-        if (index == 2) selectedSize = 5;
-        boardWidget->resetGame(selectedSize);
+    // --- CONNECTIONS (Logical Wiring) ---
+    QObject::connect(modeBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) {
+        boardWidget->isHumanVsAI = (index == 0);
+        boardWidget->resetGame(sizeBox->currentIndex() == 1 ? 7 : (sizeBox->currentIndex() == 2 ? 5 : 9));
     });
 
-    // Connect New Tile Pixel Size Customizer Dropdown
+    QObject::connect(sizeBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) {
+        int s = (index == 1) ? 7 : (index == 2 ? 5 : 9);
+        boardWidget->resetGame(s);
+    });
+
     QObject::connect(tileBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) {
-        int targetPixelSize = 50; // Medium
-        if (index == 1) targetPixelSize = 40; // Small
-        if (index == 2) targetPixelSize = 60; // Large
-        boardWidget->setTileSize(targetPixelSize); // Updates visual scale instantly
+        boardWidget->setTileSize(index == 1 ? 40 : (index == 2 ? 65 : 52));
     });
 
     QObject::connect(diffBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [=](int index) {
@@ -137,12 +133,9 @@ int main(int argc, char *argv[]) {
 
     QObject::connect(undoButton, &QPushButton::clicked, boardWidget, &GameBoardWidget::undoLastMove);
     QObject::connect(redoButton, &QPushButton::clicked, boardWidget, &GameBoardWidget::redoNextMove);
-
     QObject::connect(restartButton, &QPushButton::clicked, [=]() {
-        int currentSize = 9;
-        if (sizeBox->currentIndex() == 1) currentSize = 7;
-        if (sizeBox->currentIndex() == 2) currentSize = 5;
-        boardWidget->resetGame(currentSize);
+        int s = (sizeBox->currentIndex() == 1) ? 7 : (sizeBox->currentIndex() == 2 ? 5 : 9);
+        boardWidget->resetGame(s);
     });
 
     mainWindow->show();

@@ -208,10 +208,12 @@ bool AIPlayer::takeTurn(Board& board, WallValidator& validator, PathFinder& path
 
     // Step 3: Action Execution - Compare the static scores to make the final choice
     // If placing a wall creates a vastly better board state than moving, do it.
-    if (wallScore > moveScore && bestWall.x != -1) {
+   int wallThreshold = (board.walls.size() < 2) ? 3 : 1;
+    if (wallScore > (moveScore + wallThreshold) && bestWall.x != -1) {
         board.addWall(bestWall);
-        return true; // Wall placed
+        return true;
     }
+
 
     // Default to moving the pawn
     board.updatePawnPosition(playerIndex, bestMove.first, bestMove.second);

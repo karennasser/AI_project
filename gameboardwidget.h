@@ -53,12 +53,17 @@ private:
     void executeAITurn();
     void saveCurrentStateToUndo();
 
+    std::vector<std::pair<int, int>> highlightedMoves; // To store moves to draw
+    void updateHighlights(); // Helper to calculate highlights
+
 public:
     GameBoardWidget(Board *board, QLabel *turnLbl, QLabel *movesLbl, QLabel *p1Walls, QLabel *p2Walls, QWidget *parent = nullptr);
     void renderBoard();
     void resetGame(int newSize);
     void setAIDifficulty(int level);
     void setTileSize(int newPixelSize);
+
+    bool isHumanVsAI = true;
 
     void undoLastMove();
     void redoNextMove();
