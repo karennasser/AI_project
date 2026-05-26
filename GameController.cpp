@@ -351,28 +351,23 @@ int GameController::getWinner() const {
 // Mode Management
 
 void GameController::setMode(GameMode newMode) {
-
     mode = newMode;
 }
 // Getters
 
 Board& GameController::getBoard() {
-
     return board;
 }
 
 const Board& GameController::getBoard() const {
-
     return board;
 }
 
 int GameController::getCurrentPlayer() const {
-
     return currentPlayer;
 }
 
 GameMode GameController::getMode() const {
-
     return mode;
 }
 
