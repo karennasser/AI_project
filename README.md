@@ -100,8 +100,13 @@ placements, and "Hard" AI difficulty:
 
 👉 Watch the Demo Video Here
 
-👤 Author
+👤 team 
+| Name                       | ID      |
+| -------------------------- | ------- |
+| Marina George Boushra      | 2300509 |
+| Karen Nasser Abd almlak    | 2300354 |
+| Zeina Wael Mahmoud         | 2301016 |
+| Habiba Mohamed Abdelmohsen | 2300178 |
+| Habiba Ahmed Hashim        | 2300086 |
+| Shahinda Gamal Eldawi      | 2301029 |
 
-  - Your Name                -code
-  - karen nasser abd almlak  -2300354
-  - Marina George Boushra    -2300509
