@@ -56,7 +56,7 @@ Prerequisites
 Setup
 
 1.  Clone the Repository:
-    git clone https://github.com/yourusername/Quoridor-AI-2026.git
+    git clone [https://github.com/yourusername/Quoridor-AI-2026.git](https://github.com/karennasser/AI_project)
     cd Quoridor-AI-2026
 2.  Open Project:
       - Launch Qt Creator.
