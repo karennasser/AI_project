@@ -98,7 +98,7 @@ UI Buttons
 Watch the AI Master 2026 in action, showcasing pawn jumps, strategic wall
 placements, and "Hard" AI difficulty:
 
-👉 Watch the Demo Video Here
+👉 Watch the Demo Video Here :https://drive.google.com/file/d/1oM3OmI8R5tMdX8EW0AvaYyPYE6Lpx-SP/view?usp=drive_link
 
 👤 team 
 | Name                       | ID      |
