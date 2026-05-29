@@ -1,8 +1,4 @@
-This is a professionally structured README.md file for your Quoridor project.
-You can copy this text directly into a file named README.md in your project
-folder.
-
-♟️ Quoridor AI Master 2026
+♟️ Quoridor AI Game 2026
 
 A sophisticated, modern implementation of the classic strategy board game
 Quoridor, built using C++ and the Qt Framework. This version features a
